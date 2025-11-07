@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dashboard</title>
+  <style>
+    :root { --gap: 12px; font-family: Arial, Helvetica, sans-serif; }
+    body { margin: 0; padding: 0; display: flex; height: 100vh; min-height: 600px; }
+    .sidebar {
+      width: 320px; border-right: 1px solid #ddd; padding: 16px; box-sizing: border-box;
+      display: flex; flex-direction: column; gap: var(--gap); background: #fff;
+    }
+    .brand { display:flex; justify-content:space-between; align-items:center; }
+    .brand h2 { margin:0; font-size:18px; }
+    .logout { background:#e74c3c; color:#fff; padding:6px 10px; border:none; cursor:pointer; border-radius:6px;}
+    .search { display:flex; gap:8px; }
+    input[type="search"] { flex:1; padding:8px; border:1px solid #ccc; border-radius:6px; }
+    button { padding:8px 10px; border-radius:6px; border: none; cursor: pointer; }
+    .result-list, .friends-list { overflow-y:auto; flex:1; display:block; padding-right:6px; }
+    .user-row, .friend-row { display:flex; justify-content:space-between; align-items:center; padding:8px; border-bottom:1px solid #f0f0f0; }
+    .user-name { font-weight:600; }
+    .muted { color:#666; font-size:13px; }
+    .main {
+      flex:1; display:flex; flex-direction:column; gap:var(--gap); background:#fafafa;
+    }
+    .chat-header { padding:12px; border-bottom:1px solid #eee; display:flex; justify-content:space-between; align-items:center; background:#fff; }
+    .chat-area { flex:1; padding:12px; overflow:auto; display:flex; flex-direction:column; gap:10px; }
+    .message { max-width:70%; padding:8px 10px; border-radius:10px; }
+    .from-me { align-self:flex-end; background:#d6f5d6; }
+    .from-them { align-self:flex-start; background:#fff; border:1px solid #eee; }
+    .composer { display:flex; gap:8px; padding:10px; border-top:1px solid #eee; background:#fff; }
+    .composer input { flex:1; padding:8px; border-radius:6px; border:1px solid #ccc; }
+    .small-badge { background:#ff3b30; color:#fff; padding:2px 6px; border-radius:12px; font-size:12px; }
+    .request-btn { background:#007bff; color:white; padding:6px 8px; border-radius:6px; }
+    .accept-btn { background:#28a745; color:white; padding:6px 8px; border-radius:6px; }
+    .disabled { background:#999; opacity:0.9; cursor:default; }
+    .empty { padding:12px; color:#666; }
+    /* friend meta placed in markup */
+    #friendMeta { display:flex; gap:8px; align-items:center; }
+
+    /* Responsive: mobile */
+    @media (max-width: 720px) {
+      body { flex-direction: column; height: auto; }
+      .sidebar { width: 100%; border-right: none; border-bottom: 1px solid #ddd; }
+      .main { width: 100%; min-height: 400px; }
+      .result-list { height: 140px !important; }
+      .friends-list { height: 160px !important; }
+      .user-row, .friend-row { padding: 10px 6px; }
+      .chat-header { padding: 10px; }
+      .composer { padding: 8px; }
+      .message { max-width: 85%; }
+    }
+
+    /* small visual tweaks for buttons in header */
+    #clearChatBtn, #removeFriendBtn {
+      padding:6px 8px; border-radius:6px; border:none; cursor:pointer;
+    }
+    #clearChatBtn { background:#f1c40f; color:#111; }
+    #removeFriendBtn { background:#e74c3c; color:#fff; }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="brand">
+      <h2 id="welcome">Welcome</h2>
+      <button id="logout" class="logout">Logout</button>
+    </div>
+
+    <div>
+      <div class="search">
+        <input id="searchInput" type="search" placeholder="Search username..." />
+        <button id="searchBtn">Search</button>
+      </div>
+      <div id="searchResults" class="result-list" style="height:160px; margin-top:8px;"></div>
+    </div>
+
+    <div style="font-weight:700; margin-top:6px;">Friends</div>
+    <div id="friendsList" class="friends-list" style="height:calc(100% - 300px);"></div>
+  </div>
+
+  <div class="main">
+    <div class="chat-header">
+      <div>
+        <div style="font-weight:700;" id="chatTitle">Select a friend to chat</div>
+        <div class="muted" id="chatSub">No chat open</div>
+      </div>
+
+      <!-- Friend meta controls placed in HTML so visible and accessible -->
+      <div id="friendMeta">
+        <button id="clearChatBtn" title="Clear chat with friend">Clear Chat</button>
+        <button id="removeFriendBtn" title="Remove friend">Remove Friend</button>
+      </div>
+    </div>
+
+    <div id="chatArea" class="chat-area">
+      <div class="empty">Open a friend to start chatting in real time.</div>
+    </div>
+
+    <div class="composer" id="composer" style="display:none;">
+      <input id="messageInput" placeholder="Type a message..." />
+      <button id="sendBtn">Send</button>
+    </div>
+  </div>
+
+  <!-- external JS -->
+  <script src="dashboard.js"></script>
+</body>
+</html>
